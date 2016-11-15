@@ -1,6 +1,7 @@
 package com.dailyhotel.watchman;
 
 
+import com.dailyhotel.watchman.exception.DuplicateDectectedException;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
@@ -25,9 +26,11 @@ public class DuplicateDetectionMethodInterceptor implements MethodInterceptor {
         final int ttlInSecond = annotation.ttlInSecond();
 
         try {
-            return invocation.proceed();
-        } finally {
             detector.detect(invocation, Duration.ofSeconds(ttlInSecond), thredshold);
+        } catch (DuplicateDectectedException detectionEx) {
+            throw detectionEx;
         }
+
+        return invocation.proceed();
     }
 }
