@@ -11,5 +11,5 @@ import java.time.Duration;
 @Documented
 public @interface DuplicateDetection {
     int ttlInSecond() default 60;
-    int thredshold() default 2;
+    int thredshold() default 1;
 }

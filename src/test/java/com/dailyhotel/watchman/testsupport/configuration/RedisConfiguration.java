@@ -1,6 +1,5 @@
 package com.dailyhotel.watchman.testsupport.configuration;
 
-import com.dailyhotel.watchman.CacheClient;
 import com.dailyhotel.watchman.MethodCall;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.cache.CacheManager;
@@ -17,7 +16,6 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 
 import javax.inject.Inject;
-import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableCaching(mode = AdviceMode.PROXY, proxyTargetClass = true)
@@ -46,22 +44,4 @@ public class RedisConfiguration extends CachingConfigurerSupport {
         template.setHashValueSerializer(new JdkSerializationRedisSerializer());
         return template;
     }
-
-    @Bean
-    public CacheClient cacheClient() {
-        return new CacheClient() {
-            private RedisTemplate<String, MethodCall> redisTemplate = redisTemplate();
-
-            @Override
-            public MethodCall get(String key) {
-                return redisTemplate.opsForValue().get(key);
-            }
-
-            @Override
-            public void set(String key, MethodCall value, long timeout, TimeUnit unit) {
-                redisTemplate.opsForValue().set(key, value, timeout, unit);
-            }
-        };
-    }
-
 }

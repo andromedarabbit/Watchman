@@ -4,13 +4,11 @@ import com.dailyhotel.watchman.exception.DuplicateDectectedException;
 import com.dailyhotel.watchman.testsupport.CacheInvalidationRule;
 import com.dailyhotel.watchman.testsupport.MyData;
 import org.aopalliance.intercept.MethodInvocation;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.inject.Inject;
@@ -34,11 +32,12 @@ public class DuplicateDetectorTest {
     @Inject
     private CacheClient cacheClient;
 
-    private MethodInvocation invocation;
+    private MethodInvocation getInvocation() {
+        return getInvocation(new Object[0]);
+    }
 
-    @Before
-    public void setUp() {
-        invocation = new MethodInvocation() {
+    private MethodInvocation getInvocation(Object... arguments) {
+        return new MethodInvocation() {
             @Override
             public Method getMethod() {
                 return this.getClass().getDeclaredMethods()[0];
@@ -46,7 +45,7 @@ public class DuplicateDetectorTest {
 
             @Override
             public Object[] getArguments() {
-                return new Object[0];
+                return arguments;
             }
 
             @Override
@@ -67,9 +66,25 @@ public class DuplicateDetectorTest {
     }
 
     @Test
+    public void allowedUnderThreshold() throws Exception {
+
+        final MethodInvocation invocation = getInvocation("allowedUnderThreshold");
+        final int thredshold = 2;
+        final Duration ttl = Duration.ofSeconds(10);
+
+        DuplicateDetector detector = new DuplicateDetector(cacheClient);
+
+        for (int i = 0; i < thredshold - 1; i++) {
+            detector.detect(invocation, ttl, thredshold);
+        }
+    }
+
+
+    @Test
     public void duplicateDetected() throws Exception {
         thrown.expect(DuplicateDectectedException.class);
 
+        final MethodInvocation invocation = getInvocation();
         final int thredshold = 1;
         final Duration ttl = Duration.ofSeconds(10);
 
@@ -91,10 +106,7 @@ public class DuplicateDetectorTest {
 
         for (int i = 0; i < thredshold + 1; i++) {
             data.setName("test");
-            data.getName();
         }
-
-        data.getName();
     }
 
 }

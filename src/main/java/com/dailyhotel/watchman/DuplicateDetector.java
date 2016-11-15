@@ -23,7 +23,7 @@ public class DuplicateDetector {
         final String signature = invocation.getMethod().toString();
 
         final Object[] arguments = invocation.getArguments();
-        final String argumentsStr = MoreObjects.toStringHelper(invocation.getArguments()).toString();
+        final String argumentsStr = Lists.newArrayList(invocation.getArguments()).toString();
 
         final String key = MoreObjects.toStringHelper(this)
                 .add("signature", signature)
@@ -33,7 +33,7 @@ public class DuplicateDetector {
         final MethodCall oldRecord = cacheClient.get(key);
         final MethodCall newRecord = getMethodCall(oldRecord, signature, arguments, ttl, thredshold);
         try {
-            if (oldRecord != null && oldRecord.getThredshold() >= thredshold) {
+            if (newRecord.getCount() > thredshold) {
                 throw new DuplicateDectectedException(newRecord);
             }
         } finally {
