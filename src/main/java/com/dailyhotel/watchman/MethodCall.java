@@ -4,7 +4,6 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.time.Duration;
 import java.util.List;
 
 /**
@@ -13,7 +12,7 @@ import java.util.List;
 @Accessors(chain = true)
 @EqualsAndHashCode()
 @ToString(callSuper = true, includeFieldNames = true)
-public class MethodCall implements Serializable{
+public class MethodCall implements Serializable {
     @Getter
     @Setter
     private String signature;
@@ -25,7 +24,7 @@ public class MethodCall implements Serializable{
 
     @Getter
     @Setter
-    private Duration ttl;
+    private Long ttlInSecond;
 
     @Getter
     @Setter

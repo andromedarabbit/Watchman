@@ -75,7 +75,7 @@ public class DuplicateDetectorTest {
         DuplicateDetector detector = new DuplicateDetector(cacheClient);
 
         for (int i = 0; i < thredshold - 1; i++) {
-            detector.detect(invocation, ttl, thredshold);
+            detector.detect(invocation, ttl.getSeconds(), thredshold);
         }
     }
 
@@ -91,7 +91,7 @@ public class DuplicateDetectorTest {
         DuplicateDetector detector = new DuplicateDetector(cacheClient);
 
         for (int i = 0; i < thredshold + 1; i++) {
-            detector.detect(invocation, ttl, thredshold);
+            detector.detect(invocation, ttl.getSeconds(), thredshold);
         }
     }
 

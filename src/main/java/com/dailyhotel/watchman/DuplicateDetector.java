@@ -5,7 +5,6 @@ import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 import org.aopalliance.intercept.MethodInvocation;
 
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -19,7 +18,7 @@ public class DuplicateDetector {
         this.cacheClient = cacheClient;
     }
 
-    public void detect(MethodInvocation invocation, Duration ttl, int thredshold) {
+    public void detect(MethodInvocation invocation, long ttlInSecond, int thredshold) {
         final String signature = invocation.getMethod().toString();
 
         final Object[] arguments = invocation.getArguments();
@@ -31,22 +30,22 @@ public class DuplicateDetector {
                 .toString();
 
         final MethodCall oldRecord = cacheClient.get(key);
-        final MethodCall newRecord = getMethodCall(oldRecord, signature, arguments, ttl, thredshold);
+        final MethodCall newRecord = getMethodCall(oldRecord, signature, arguments, ttlInSecond, thredshold);
         try {
             if (newRecord.getCount() > thredshold) {
                 throw new DuplicateDectectedException(newRecord);
             }
         } finally {
-            cacheClient.set(key, newRecord, ttl.getSeconds(), TimeUnit.SECONDS);
+            cacheClient.set(key, newRecord, ttlInSecond, TimeUnit.SECONDS);
         }
     }
 
-    private MethodCall getMethodCall(final MethodCall old, String signature, Object[] arguments, Duration ttl, int thredshold) {
+    private MethodCall getMethodCall(final MethodCall old, String signature, Object[] arguments, long ttlInSecond, int thredshold) {
         if (old == null) {
             return new MethodCall()
                     .setSignature(signature)
                     .setArguments(Lists.newArrayList(arguments))
-                    .setTtl(ttl)
+                    .setTtlInSecond(ttlInSecond)
                     .setThredshold(thredshold)
                     .setCount(1)
                     ;
@@ -55,7 +54,7 @@ public class DuplicateDetector {
         return new MethodCall()
                 .setSignature(signature)
                 .setArguments(Lists.newArrayList(arguments))
-                .setTtl(ttl)
+                .setTtlInSecond(ttlInSecond)
                 .setThredshold(thredshold)
                 .setCount(old.getCount() + 1)
                 ;
