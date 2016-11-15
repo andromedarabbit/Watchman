@@ -9,7 +9,7 @@
 
 buildscript {
     ext {
-        springBootVersion = '1.4.1.RELEASE'
+        springBootVersion = '1.4.2.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -19,7 +19,7 @@ buildscript {
     }
 }
 
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 apply plugin: 'maven'
 apply plugin: 'idea'
 apply plugin: "io.spring.dependency-management"
@@ -62,8 +62,7 @@ repositories {
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter'
-    compile "org.springframework.boot:spring-boot-starter-redis"
+    compile "org.springframework.boot:spring-boot-starter-aop"
 
     compile "javax.inject:javax.inject:1"
     compile 'org.projectlombok:lombok:1.16.10'
@@ -77,10 +76,9 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile "org.springframework.boot:spring-boot-starter-redis"
 
-    testCompile 'org.springframework.boot:spring-boot-starter-data-redis'
 }
-
 
 install {
     repositories.mavenInstaller {
@@ -89,3 +87,5 @@ install {
         pom.artifactId = "watchman"
     }
 }
+
+

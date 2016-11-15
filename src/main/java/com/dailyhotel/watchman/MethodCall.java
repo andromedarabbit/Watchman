@@ -13,7 +13,7 @@ import java.util.List;
 @Accessors(chain = true)
 @EqualsAndHashCode()
 @ToString(callSuper = true, includeFieldNames = true)
-public class MethodCall implements Serializable {
+public class MethodCall implements Serializable{
     @Getter
     @Setter
     private String signature;

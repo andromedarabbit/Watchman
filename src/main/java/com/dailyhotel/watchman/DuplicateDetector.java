@@ -4,12 +4,7 @@ import com.dailyhotel.watchman.exception.DuplicateDectectedException;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 import org.aopalliance.intercept.MethodInvocation;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SetOperations;
-import org.springframework.data.redis.core.ValueOperations;
 
-import javax.inject.Inject;
-import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
@@ -18,10 +13,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class DuplicateDetector {
 
-    private final RedisTemplate<String, MethodCall> redisTemplate;
+    private final CacheClient cacheClient;
 
-    public DuplicateDetector(RedisTemplate<String, MethodCall> redisTemplate) {
-        this.redisTemplate = redisTemplate;
+    public DuplicateDetector(CacheClient cacheClient) {
+        this.cacheClient = cacheClient;
     }
 
     public void detect(MethodInvocation invocation, Duration ttl, int thredshold) {
@@ -33,24 +28,21 @@ public class DuplicateDetector {
         final String key = MoreObjects.toStringHelper(this)
                 .add("signature", signature)
                 .add("arguments", argumentsStr)
-                .toString()
-                ;
+                .toString();
 
-
-        ValueOperations<String, MethodCall> ops = redisTemplate.opsForValue();
-        final MethodCall oldRecord = ops.get(key);
+        final MethodCall oldRecord = cacheClient.get(key);
         final MethodCall newRecord = getMethodCall(oldRecord, signature, arguments, ttl, thredshold);
         try {
             if (oldRecord != null && oldRecord.getThredshold() >= thredshold) {
                 throw new DuplicateDectectedException(newRecord);
             }
         } finally {
-            ops.set(key, newRecord, ttl.getSeconds(), TimeUnit.SECONDS);
+            cacheClient.set(key, newRecord, ttl.getSeconds(), TimeUnit.SECONDS);
         }
     }
 
     private MethodCall getMethodCall(final MethodCall old, String signature, Object[] arguments, Duration ttl, int thredshold) {
-        if(old == null) {
+        if (old == null) {
             return new MethodCall()
                     .setSignature(signature)
                     .setArguments(Lists.newArrayList(arguments))

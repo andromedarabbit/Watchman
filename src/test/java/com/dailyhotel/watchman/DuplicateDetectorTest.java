@@ -2,6 +2,7 @@ package com.dailyhotel.watchman;
 
 import com.dailyhotel.watchman.exception.DuplicateDectectedException;
 import com.dailyhotel.watchman.testsupport.CacheInvalidationRule;
+import com.dailyhotel.watchman.testsupport.MyData;
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Before;
 import org.junit.Rule;
@@ -31,7 +32,7 @@ public class DuplicateDetectorTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Inject
-    private RedisTemplate<String, MethodCall> redisTemplate;
+    private CacheClient cacheClient;
 
     private MethodInvocation invocation;
 
@@ -72,11 +73,28 @@ public class DuplicateDetectorTest {
         final int thredshold = 1;
         final Duration ttl = Duration.ofSeconds(10);
 
-        DuplicateDetector detector = new DuplicateDetector(redisTemplate);
+        DuplicateDetector detector = new DuplicateDetector(cacheClient);
 
         for (int i = 0; i < thredshold + 1; i++) {
             detector.detect(invocation, ttl, thredshold);
         }
+    }
+
+    @Inject
+    private MyData data;
+
+    @Test
+    public void annotationSupport() {
+        thrown.expect(DuplicateDectectedException.class);
+
+        final int thredshold = 1;
+
+        for (int i = 0; i < thredshold + 1; i++) {
+            data.setName("test");
+            data.getName();
+        }
+
+        data.getName();
     }
 
 }
