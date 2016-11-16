@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/DailyHotel/Watchman.svg?branch=master)](https://travis-ci.org/DailyHotel/Watchman)
+`master`: [![Build Status](https://travis-ci.org/DailyHotel/Watchman.svg?branch=master)](https://travis-ci.org/DailyHotel/Watchman)
+`develop`: [![Build Status](https://travis-ci.org/DailyHotel/Watchman.svg?branch=develop)](https://travis-ci.org/DailyHotel/Watchman)
 
 # Watchman
 Simple java library to detect duplicate method calls. The following scenarios can be covered:
