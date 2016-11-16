@@ -28,7 +28,7 @@ public class MethodCall implements Serializable {
 
     @Getter
     @Setter
-    private Integer thredshold;
+    private Integer threshold;
 
     @Getter
     @Setter

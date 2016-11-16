@@ -18,7 +18,7 @@ public class DuplicateDetector {
         this.cacheClient = cacheClient;
     }
 
-    public void detect(MethodInvocation invocation, long ttlInSecond, int thredshold) {
+    public void detect(MethodInvocation invocation, long ttlInSecond, int threshold) {
         final String signature = invocation.getMethod().toString();
 
         final Object[] arguments = invocation.getArguments();
@@ -30,9 +30,9 @@ public class DuplicateDetector {
                 .toString();
 
         final MethodCall oldRecord = cacheClient.get(key);
-        final MethodCall newRecord = getMethodCall(oldRecord, signature, arguments, ttlInSecond, thredshold);
+        final MethodCall newRecord = getMethodCall(oldRecord, signature, arguments, ttlInSecond, threshold);
         try {
-            if (newRecord.getCount() > thredshold) {
+            if (newRecord.getCount() > threshold) {
                 throw new DuplicateDectectedException(newRecord);
             }
         } finally {
@@ -40,13 +40,13 @@ public class DuplicateDetector {
         }
     }
 
-    private MethodCall getMethodCall(final MethodCall old, String signature, Object[] arguments, long ttlInSecond, int thredshold) {
+    private MethodCall getMethodCall(final MethodCall old, String signature, Object[] arguments, long ttlInSecond, int threshold) {
         if (old == null) {
             return new MethodCall()
                     .setSignature(signature)
                     .setArguments(Lists.newArrayList(arguments))
                     .setTtlInSecond(ttlInSecond)
-                    .setThredshold(thredshold)
+                    .setThreshold(threshold)
                     .setCount(1)
                     ;
         }
@@ -55,7 +55,7 @@ public class DuplicateDetector {
                 .setSignature(signature)
                 .setArguments(Lists.newArrayList(arguments))
                 .setTtlInSecond(ttlInSecond)
-                .setThredshold(thredshold)
+                .setThreshold(threshold)
                 .setCount(old.getCount() + 1)
                 ;
     }

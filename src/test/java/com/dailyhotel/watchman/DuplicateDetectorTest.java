@@ -69,13 +69,13 @@ public class DuplicateDetectorTest {
     public void allowedUnderThreshold() throws Exception {
 
         final MethodInvocation invocation = getInvocation("allowedUnderThreshold");
-        final int thredshold = 2;
+        final int threshold = 2;
         final Duration ttl = Duration.ofSeconds(10);
 
         DuplicateDetector detector = new DuplicateDetector(cacheClient);
 
-        for (int i = 0; i < thredshold - 1; i++) {
-            detector.detect(invocation, ttl.getSeconds(), thredshold);
+        for (int i = 0; i < threshold - 1; i++) {
+            detector.detect(invocation, ttl.getSeconds(), threshold);
         }
     }
 
@@ -85,13 +85,13 @@ public class DuplicateDetectorTest {
         thrown.expect(DuplicateDectectedException.class);
 
         final MethodInvocation invocation = getInvocation();
-        final int thredshold = 1;
+        final int threshold = 1;
         final Duration ttl = Duration.ofSeconds(10);
 
         DuplicateDetector detector = new DuplicateDetector(cacheClient);
 
-        for (int i = 0; i < thredshold + 1; i++) {
-            detector.detect(invocation, ttl.getSeconds(), thredshold);
+        for (int i = 0; i < threshold + 1; i++) {
+            detector.detect(invocation, ttl.getSeconds(), threshold);
         }
     }
 
@@ -102,9 +102,9 @@ public class DuplicateDetectorTest {
     public void annotationSupport() {
         thrown.expect(DuplicateDectectedException.class);
 
-        final int thredshold = 1;
+        final int threshold = 1;
 
-        for (int i = 0; i < thredshold + 1; i++) {
+        for (int i = 0; i < threshold + 1; i++) {
             data.setName("test");
         }
     }
