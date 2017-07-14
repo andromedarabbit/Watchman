@@ -1,5 +1,5 @@
-`master`: [![Build Status](https://travis-ci.org/DailyHotel/Watchman.svg?branch=master)](https://travis-ci.org/DailyHotel/Watchman) [ ![Codeship Status for DailyHotel/Watchman](https://app.codeship.com/projects/4437b630-8e8b-0134-e77f-32b551f4333a/status?branch=master)](https://app.codeship.com/projects/185295)
-`develop`: [![Build Status](https://travis-ci.org/DailyHotel/Watchman.svg?branch=develop)](https://travis-ci.org/DailyHotel/Watchman) [ ![Codeship Status for DailyHotel/Watchman](https://app.codeship.com/projects/4437b630-8e8b-0134-e77f-32b551f4333a/status?branch=develop)](https://app.codeship.com/projects/185295)
+[![Build Status](https://travis-ci.org/DailyHotel/Watchman.svg?branch=master)](https://travis-ci.org/DailyHotel/Watchman)
+[![codecov](https://codecov.io/gh/DailyHotel/Watchman/branch/master/graph/badge.svg)](https://codecov.io/gh/DailyHotel/Watchman)
 
 # Watchman
 Simple java library to detect duplicate method calls. The following scenarios can be covered:
