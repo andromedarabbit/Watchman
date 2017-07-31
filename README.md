@@ -9,7 +9,7 @@ Simple java library to detect duplicate method calls. The following scenarios ca
 
 ## Prerequisites
 
-* [Spring Boot](https://projects.spring.io/spring-boot/) v1.4.2
+* [Spring Boot](https://projects.spring.io/spring-boot/) v1.5.6
 
 ## How to use Watchman
 

@@ -9,7 +9,7 @@
 
 buildscript {
     ext {
-        springBootVersion = '1.4.2.RELEASE'
+        springBootVersion = '1.5.6.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -77,7 +77,7 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
-    testCompile "org.springframework.boot:spring-boot-starter-redis"
+    testCompile "org.springframework.boot:spring-boot-starter-data-redis"
 
 }
 
