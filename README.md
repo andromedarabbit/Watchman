@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.com/andromedarabbit/Watchman.svg?branch=master)](https://travis-ci.com/andromedarabbit/Watchman)
 [![codecov](https://codecov.io/gh/andromedarabbit/Watchman/branch/master/graph/badge.svg)](https://codecov.io/gh/andromedarabbit/Watchman)
+[![](https://jitpack.io/v/andromedarabbit/Watchman.svg)](https://jitpack.io/#andromedarabbit/Watchman)
 
 # Watchman
 Simple java library to detect duplicate method calls. The following scenarios can be covered:
