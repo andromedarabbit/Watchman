@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/DailyHotel/Watchman.svg?branch=master)](https://travis-ci.org/DailyHotel/Watchman)
-[![codecov](https://codecov.io/gh/DailyHotel/Watchman/branch/master/graph/badge.svg)](https://codecov.io/gh/DailyHotel/Watchman)
+[![Build Status](https://travis-ci.com/andromedarabbit/Watchman.svg?branch=master)](https://travis-ci.com/andromedarabbit/Watchman)
+[![codecov](https://codecov.io/gh/andromedarabbit/Watchman/branch/master/graph/badge.svg)](https://codecov.io/gh/andromedarabbit/Watchman)
 
 # Watchman
 Simple java library to detect duplicate method calls. The following scenarios can be covered:
@@ -9,7 +9,7 @@ Simple java library to detect duplicate method calls. The following scenarios ca
 
 ## Prerequisites
 
-* [Spring Boot](https://projects.spring.io/spring-boot/) v1.4.2
+* [Spring Boot](https://projects.spring.io/spring-boot/) v2.1.6
 
 ## How to use Watchman
 
@@ -59,12 +59,12 @@ If you are using Gradle as your build tool,
     ```
 2. Add the dependency
     ```gradle
-    dependencies {
-		compile 'com.github.User:Repo:Tag'
+	dependencies {
+	    implementation 'com.github.andromedarabbit:Watchman:Tag'
 	}
     ```
 
-[Maven](https://maven.apache.org/), [SBT](http://www.scala-sbt.org/), and [Leiningen](http://leiningen.org/) are [supported as well](https://jitpack.io/#DailyHotel/Watchman).
+[Maven](https://maven.apache.org/), [SBT](http://www.scala-sbt.org/), and [Leiningen](http://leiningen.org/) are [supported as well](https://jitpack.io/#andromedarabbit/Watchman).
 
 ## How to run tests
 

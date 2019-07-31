@@ -7,52 +7,54 @@
  * user guide available at https://docs.gradle.org/3.1/userguide/tutorial_java_projects.html
  */
 
-buildscript {
-    ext {
-        springBootVersion = '1.4.2.RELEASE'
-    }
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
+plugins {
+    id 'org.springframework.boot' version '2.1.6.RELEASE'
+    id 'java'
 }
 
-apply plugin: 'org.springframework.boot'
-apply plugin: 'maven'
-apply plugin: 'idea'
-apply plugin: "io.spring.dependency-management"
+apply plugin: 'io.spring.dependency-management'
 apply plugin: 'jacoco' // codecov.io
+
+group = 'com.upbit.platform'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '12'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
 
 ext {
     watchmanVersion = '0.0.1-SNAPSHOT'
 }
+//
+//jar {
+//    achiveBaseName = 'watchman'
+//    version = "${watchmanVersion}"
+//}
+//
+//
+//task('execJar', type:Jar, dependsOn: 'jar') {
+//    baseName = 'watchman'
+//    version = "${watchmanVersion}"
+//    classifier = 'exec'
+//    from sourceSets.main.output
+//}
+//
+//bootRepackage  {
+//    withJarTask = tasks['execJar']
+//}
 
-jar {
-    baseName = 'watchman'
-    version = "${watchmanVersion}"
-}
 
-
-task('execJar', type:Jar, dependsOn: 'jar') {
-    baseName = 'watchman'
-    version = "${watchmanVersion}"
-    classifier = 'exec'
-    from sourceSets.main.output
-}
-
-bootRepackage  {
-    withJarTask = tasks['execJar']
-}
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 allprojects {
     repositories {
         jcenter()
-        maven { url "https://jitpack.io" }
     }
 }
 
@@ -66,28 +68,31 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-aop"
 
     compile "javax.inject:javax.inject:1"
-    compile 'org.projectlombok:lombok:1.16.10'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
 
-    testCompile('com.fasterxml.jackson.core:jackson-core')
-    testCompile('com.fasterxml.jackson.core:jackson-databind')
+    testCompile 'com.fasterxml.jackson.core:jackson-core'
+    testCompile 'com.fasterxml.jackson.core:jackson-databind'
 
-    compile 'com.google.guava:guava:19.0'
+    compile 'com.google.guava:guava:28.0-jre'
 
     // The production code uses the SLF4J logging API at compile time
     compile 'org.slf4j:slf4j-api:1.7.21'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
-    testCompile "org.springframework.boot:spring-boot-starter-redis"
+    testCompile "org.springframework.boot:spring-boot-starter-data-redis"
 
 }
 
-install {
-    repositories.mavenInstaller {
-        pom.version = "${watchmanVersion}"
-        pom.groupId = "com.github.dailyhotel"
-        pom.artifactId = "watchman"
-    }
-}
+//install {
+//    repositories.mavenInstaller {
+//        pom.version = "${watchmanVersion}"
+//        pom.groupId = "com.github.dailyhotel"
+//        pom.artifactId = "watchman"
+//    }
+//}
 
 // codecov.io
 jacocoTestReport {

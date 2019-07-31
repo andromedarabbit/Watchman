@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
@@ -24,15 +25,8 @@ public class RedisConfiguration extends CachingConfigurerSupport {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Inject
-    private RedisConnectionFactory connectionFactory;
+    private LettuceConnectionFactory connectionFactory;
 
-
-    @Override
-    @Primary
-    @Bean
-    public CacheManager cacheManager() {
-        return new RedisCacheManager(redisTemplate());
-    }
 
     @Bean
     public RedisTemplate<String, MethodCall> redisTemplate() {
